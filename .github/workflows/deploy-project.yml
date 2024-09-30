@@ -44,6 +44,7 @@ jobs:
 #      AWS_REGION: ${{ secrets.AWS_REGION }}
 
   deploy-app-argocd:
+    needs: build-push
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-argocd-app.yml@feat/adds-news-workflows
     with:
       environment: 'production'
