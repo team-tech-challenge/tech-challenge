@@ -43,7 +43,7 @@ jobs:
 #      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 #      AWS_REGION: ${{ secrets.AWS_REGION }}
 
-  deploy-app-argocd:
+  app-argocd:
     needs: build-push
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-argocd-app.yml@feat/adds-news-workflows
     with:
@@ -60,7 +60,7 @@ jobs:
       EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
 
   change-tag:
-    needs: deploy-app-argocd
+    needs: app-argocd
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@feat/adds-news-workflows
     with:
       destination_repo: 'team-tech-challenge/tech-challenge-manifest'
