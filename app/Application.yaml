@@ -22,7 +22,7 @@ spec:
                 targetRevision: development
             destination:
                 server: '{{url}}'
-                namespace: apps
+                namespace: core
             syncPolicy:
                 automated:
                     prune: true
