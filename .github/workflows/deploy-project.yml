@@ -1,4 +1,4 @@
-name: 'Deploy to Terraform Apply'
+name: 'Deploy to Terraform'
 
 on:
   push:
