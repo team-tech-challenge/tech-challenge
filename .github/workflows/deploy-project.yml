@@ -45,7 +45,7 @@ jobs:
 
   deploy-app-argocd:
     needs: trivy-scan
-    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/trivy-scan.yml@feat/adds-news-workflows
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-argocd-app.yml@feat/adds-news-workflows
     with:
       environment: 'production'
     secrets:
