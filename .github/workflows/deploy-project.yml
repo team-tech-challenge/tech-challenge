@@ -59,17 +59,17 @@ jobs:
       TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}
       EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
 
-    change-tag-version:
-        needs: deploy-app-argocd
-        uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@feat/adds-news-workflows
-        with:
-          destination_repo: 'https://github.com/team-tech-challenge/tech-challenge-manifest.git'
-          destination_folder: 'app/charts'
-          destination_branch: 'development'
-        secrets:
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-            ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-            API_TOKEN_GITHUB: ${{ refs.github.token }}
+  change-tag-version:
+    needs: deploy-app-argocd
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@feat/adds-news-workflows
+    with:
+      destination_repo: 'https://github.com/team-tech-challenge/tech-challenge-manifest.git'
+      destination_folder: 'app/charts'
+      destination_branch: 'development'
+    secrets:
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+      API_TOKEN_GITHUB: ${{ refs.github.token }}
