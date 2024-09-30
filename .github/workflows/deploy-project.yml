@@ -1,4 +1,4 @@
-name: 'Deploy to Terraform and ArgoCD'
+name: 'Deploy to Terraform'
 
 on:
   push:
