@@ -1,0 +1,15 @@
+# Description: This file contains the service definition for the PostgreSQL deployment.
+apiVersion: v1
+kind: Service
+metadata:
+    name: postgresql
+    namespace: tool-database
+    labels:
+        app: postgresql
+spec:
+    ports:
+        - port: 5432
+          targetPort: 5432
+    selector:
+        app: postgresql
+    type: ClusterIP

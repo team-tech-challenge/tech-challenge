@@ -1,0 +1,7 @@
+# Description: This file is used to create a namespace for the application.
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: core
+    labels:
+        name: tech-challenge

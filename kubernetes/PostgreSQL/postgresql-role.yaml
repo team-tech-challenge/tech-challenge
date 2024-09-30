@@ -1,0 +1,29 @@
+# Descripton: This file contains the Role definition for the PostgreSQL database.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+    namespace: tool-database
+    name: postgresql-role
+rules:
+    # Permissions for Pods and Services
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get", "list", "watch", "create", "update"]
+    - apiGroups: [""]
+      resources: ["services"]
+      verbs: ["get", "list", "watch", "create", "update"]
+
+    # Permissions for Horizontal Pod Autoscalers
+    - apiGroups: ["autoscaling"]
+      resources: ["horizontalpodautoscalers"]
+      verbs: ["get", "list", "watch", "create", "update"]
+
+    # Permissions for Deployments
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get", "list", "watch", "create", "update"]
+
+    # Permissions for ConfigMaps and Secrets - Read Only
+    - apiGroups: [""]
+      resources: ["configmaps", "secrets"]
+      verbs: ["get", "list", "watch"]

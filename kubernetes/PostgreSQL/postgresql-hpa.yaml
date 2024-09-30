@@ -1,0 +1,16 @@
+# Description: Horizontal Pod Autoscaler for PostgreSQL deployment.
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+    name: postgresql
+    namespace: tool-database
+    labels:
+        app: postgresql
+spec:
+    scaleTargetRef:
+        apiVersion: apps/v1
+        name: postgresql-deployment
+        kind: Deployment
+    minReplicas: 1
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 20

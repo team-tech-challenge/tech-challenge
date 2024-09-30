@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+    name: tech-challenge
+    namespace: argocd
+    finalizers:
+        - resources-finalizer.argocd.argoproj.io
+spec:
+    generators:
+        - list:
+              elements:
+                  - cluster: default
+                    url: 'https://kubernetes.default.svc'
+    template:
+        metadata:
+            name: '{{cluster}}-tech-challenge'
+        spec:
+            project: default
+            source:
+                repoURL: 'https://github.com/team-tech-challenge/tech-challenge-manifest.git'
+                path: app/charts
+                targetRevision: development
+            destination:
+                server: '{{url}}'
+                namespace: apps
+            syncPolicy:
+                automated:
+                    prune: true
+                    selfHeal: true
+                syncOptions:
+                    - CreateNamespace=true
+                    - PruneLast=true

@@ -1,0 +1,14 @@
+# Description: This file contains the RoleBinding configuration for the PostgreSQL database.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+    name: postgresql-role-binding
+    namespace: tool-database
+subjects:
+    - kind: ServiceAccount
+      name: postgresql-service-account
+      namespace: tool-database
+roleRef:
+    kind: Role
+    name: postgresql-role
+    apiGroup: rbac.authorization.k8s.io

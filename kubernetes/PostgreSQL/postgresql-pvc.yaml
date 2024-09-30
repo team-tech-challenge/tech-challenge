@@ -1,0 +1,14 @@
+# Description: This file is used to create a persistent volume claim for PostgreSQL.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: postgresql-persistent-volume-claim
+    namespace: tool-database
+    labels:
+        app: postgresql
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 5Gi

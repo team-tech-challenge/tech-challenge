@@ -1,0 +1,69 @@
+name: 'Deploy to Terraform and ArgoCD'
+
+on:
+  push:
+    branches:
+      - development
+
+permissions:
+  contents: write
+  packages: write
+  actions: write
+
+jobs:
+  create-ecr:
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-elastic-container-registry.yml@feat/adds-news-workflows
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+      WORKING_DIRECTORY: ${{ secrets.WORKING_DIRECTORY }}
+      TF_BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+      TF_BACKEND_REGION: ${{ secrets.TF_BACKEND_REGION }}
+      TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}
+
+  build-push:
+    needs: create-ecr
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/build-image-and-push.yml@feat/adds-news-workflows
+    secrets:
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+
+  trivy-scan:
+    needs: build-push
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/trivy-scan.yml@feat/adds-news-workflows
+    secrets:
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
+  deploy-app-argocd:
+    needs: trivy-scan
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/trivy-scan.yml@feat/adds-news-workflows
+    with:
+      environment: 'production'
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      WORKING_DIRECTORY: ${{ secrets.WORKING_DIRECTORY }}
+      TF_BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+      TF_BACKEND_REGION: ${{ secrets.TF_BACKEND_REGION }}
+      TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}
+      EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
+
+#    change-tag-version:
+#        needs: deploy-app-argocd
+#        uses: Musatech/reusable-terraform/.github/workflows/argocd-deploy.yml@DEV-48/create-workflows-to-argocd
+#        secrets:
+#            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+#            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+#            AWS_REGION: ${{ secrets.AWS_REGION }}
+#            ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}

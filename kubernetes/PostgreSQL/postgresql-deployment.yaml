@@ -1,0 +1,84 @@
+# Description: This file contains the deployment configuration for the PostgreSQL database.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: postgresql-deployment
+    namespace: tool-database
+    labels:
+        app: postgresql
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: postgresql
+    template:
+        metadata:
+            labels:
+                app: postgresql
+        spec:
+            containers:
+                - name: postgresql
+                  image: postgres:alpine
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        valueFrom:
+                            configMapKeyRef:
+                                name: postgresql-configmap
+                                key: POSTGRES_DB
+                      - name: POSTGRES_USER
+                        valueFrom:
+                            secretKeyRef:
+                                name: postgresql-secret
+                                key: POSTGRES_USER
+                      - name: POSTGRES_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                name: postgresql-secret
+                                key: POSTGRES_PASSWORD
+                  volumeMounts:
+                      - mountPath: /var/lib/postgresql/data
+                        name: postgresql-storage
+                      - name: postgresql-config-volume
+                        mountPath: /etc/postgresql
+                        subPath: pg_hba.conf
+                        readOnly: true
+                  resources:
+                      requests:
+                          memory: "228Mi"
+                          cpu: "150m"
+                      limits:
+                          memory: "512Mi"
+                          cpu: "500m"
+                  livenessProbe:
+                      tcpSocket:
+                          port: 5432
+                      initialDelaySeconds: 30
+                      periodSeconds: 10
+                      timeoutSeconds: 5
+                      failureThreshold: 5
+                  readinessProbe:
+                      tcpSocket:
+                          port: 5432
+                      initialDelaySeconds: 5
+                      periodSeconds: 10
+                      timeoutSeconds: 5
+                  startupProbe:
+                      tcpSocket:
+                          port: 5432
+                      initialDelaySeconds: 5
+                      periodSeconds: 10
+                      timeoutSeconds: 1
+                      failureThreshold: 30
+            volumes:
+                - name: postgresql-storage
+                  persistentVolumeClaim:
+                      claimName: postgresql-persistent-volume-claim
+                - name: postgresql-config-volume
+                  configMap:
+                      name: postgresql-config
+                      items:
+                          - key: pg_hba.conf
+                            path: pg_hba.conf
+            serviceAccountName: postgresql-service-account

@@ -1,0 +1,10 @@
+# Description: ConfigMap for PostgreSQL.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: postgresql-configmap
+    namespace: tool-database
+    labels:
+        app: postgresql
+data:
+    POSTGRES_DB: tech_challenge

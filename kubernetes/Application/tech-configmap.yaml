@@ -1,0 +1,16 @@
+# Description: This file contains the configuration for the application.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tech-challenge
+  namespace: core
+data:
+    POSTGRES_DB: "tech_challenge"
+    PORT: "3000"
+    API_VERSION: "/v1"
+    POSTGRES_HOST: "tech-challenge-postgresql.cl1sidq0kykf.us-east-1.rds.amazonaws.com"
+    NODE_ENV: "development"
+    APP_NAME: "application"
+    APP_KEY: "# ------ #"
+    APP_URL: "http://${HOST}:${PORT}"
+

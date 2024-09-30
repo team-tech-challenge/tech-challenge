@@ -1,0 +1,1419 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "v1.0.0",
+    "title": "Swagger Tech Challenge",
+    "description": "Tech Challenge API"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/category/all": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/create": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/all": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/create": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/product/update/{id}": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "description": "Update Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/bycategory/{categoryId}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/combo/all": {
+      "get": {
+        "tags": [
+          "Combo"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all combos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Combo"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Combo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/combo/{Id}": {
+      "get": {
+        "tags": [
+          "Combo"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/combo/create": {
+      "post": {
+        "tags": [
+          "Combo"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Combo"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/combo/product/association/create": {
+      "post": {
+        "tags": [
+          "Combo"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddComboProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/combo/{id}/products": {
+      "get": {
+        "tags": [
+          "Combo"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/order/all": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{Id}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/order/create": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/order/update/{id}": {
+      "put": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/product/association/create": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOrderProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/product/association/remove": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOrderProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{id}/products": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/order/orderByStatus/{status}": {
+      "get": {
+        "tags": [
+          "Queue"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Recebido"
+            },
+            "description": "Status of the order"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/customer/all": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/create": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "Create a new customer",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/search/{cpf}": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search customer by CPF",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/update/{id}": {
+      "put": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "Update customer by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "Delete customer by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/customer/{id}/campaigns": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/payment/all": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all payments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/create": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Payment"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/payment/update/{id}": {
+      "put": {
+        "tags": [
+          "FakeCheckout"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FakeCheckout"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/all": {
+      "get": {
+        "tags": [
+          "Campaign"
+        ],
+        "description": "Get all campaigns",
+        "responses": {
+          "200": {
+            "description": "Return all campaigns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Campaign"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Campaign"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/{Id}": {
+      "get": {
+        "tags": [
+          "Campaign"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/campaign/create": {
+      "post": {
+        "tags": [
+          "Campaign"
+        ],
+        "description": "Create a new campaign",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Campaign"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/customer/association/create": {
+      "post": {
+        "tags": [
+          "Campaign"
+        ],
+        "description": "Create a new campaign Customer association",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCampaignCustomer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/update/{id}": {
+      "put": {
+        "tags": [
+          "Campaign"
+        ],
+        "description": "Update campaign by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Campaign"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/{id}/customers": {
+      "get": {
+        "tags": [
+          "Campaign"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/employee/all": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return all employee",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getEmployee"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/getEmployee"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/create": {
+      "post": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Create a new employee",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Create Employee",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/search/{cpf}": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search employee by CPF",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getEmployee"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/getEmployee"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/update/{id}": {
+      "put": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Update employee by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Update Employee",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Delete employee by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Category Name"
+          }
+        },
+        "xml": {
+          "name": "Category"
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "cpf": {
+            "type": "string",
+            "example": "555.555.555-55"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name of customer"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "(99) 99999-9999"
+          },
+          "email": {
+            "type": "string",
+            "example": "email@example.com"
+          }
+        },
+        "xml": {
+          "name": "Customer"
+        }
+      },
+      "Combo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Combo Name"
+          },
+          "discount": {
+            "type": "string",
+            "example": "10"
+          }
+        },
+        "xml": {
+          "name": "Combo"
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "fk_idCustomer": {
+            "type": "number",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "example": "Created"
+          },
+          "price": {
+            "type": "string",
+            "example": "19.90"
+          }
+        },
+        "xml": {
+          "name": "Order"
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Product Name"
+          },
+          "price": {
+            "type": "string",
+            "example": "8.90"
+          },
+          "description": {
+            "type": "string",
+            "example": "Product Name"
+          },
+          "category": {
+            "xml": {
+              "name": "category"
+            },
+            "$ref": "#/components/schemas/Category"
+          }
+        },
+        "xml": {
+          "name": "Product"
+        }
+      },
+      "Campaign": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Campaign Name"
+          },
+          "campaignRule": {
+            "type": "string",
+            "example": "Campaign Rule"
+          },
+          "discount": {
+            "type": "string",
+            "example": "10"
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2021-10-20"
+          }
+        },
+        "xml": {
+          "name": "Campaign"
+        }
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "cpf": {
+            "type": "string",
+            "example": "555.555.555-55"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name of employee"
+          },
+          "username": {
+            "type": "string",
+            "example": "employee@employee"
+          },
+          "password": {
+            "type": "string",
+            "example": "E$%0of323!@#"
+          }
+        },
+        "xml": {
+          "name": "Employee"
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "type": "string",
+            "example": "MercadoPago"
+          },
+          "paymentCode": {
+            "type": "string",
+            "example": "sdofjsiodj"
+          },
+          "status": {
+            "type": "string",
+            "example": "toPay"
+          },
+          "fk_idOrder": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "Payment"
+        }
+      },
+      "FakeCheckout": {
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "type": "string",
+            "example": "MercadoPago"
+          },
+          "paymentCode": {
+            "type": "string",
+            "example": "sdofjsiodj"
+          },
+          "status": {
+            "type": "string",
+            "example": "PAID"
+          },
+          "fk_idOrder": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "FakeCheckout"
+        }
+      },
+      "getEmployee": {
+        "type": "object",
+        "properties": {
+          "cpf": {
+            "type": "string",
+            "example": "555.555.555-55"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name of employee"
+          },
+          "username": {
+            "type": "string",
+            "example": "employee@employee"
+          }
+        },
+        "xml": {
+          "name": "getEmployee"
+        }
+      },
+      "AddProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Product Name"
+          },
+          "price": {
+            "type": "string",
+            "example": "8.90"
+          },
+          "description": {
+            "type": "string",
+            "example": "Product Description"
+          },
+          "fk_idCategory": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "AddProduct"
+        }
+      },
+      "AddOrder": {
+        "type": "object",
+        "properties": {
+          "fk_idCustomer": {
+            "type": "number",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "example": "Initial Status"
+          },
+          "price": {
+            "type": "string",
+            "example": "19.90"
+          }
+        },
+        "xml": {
+          "name": "AddOrder"
+        }
+      },
+      "AddComboProduct": {
+        "type": "object",
+        "properties": {
+          "fk_idCombo": {
+            "type": "number",
+            "example": 1
+          },
+          "fk_idProduct": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "AddComboProduct"
+        }
+      },
+      "AddOrderProduct": {
+        "type": "object",
+        "properties": {
+          "fk_idOrder": {
+            "type": "number",
+            "example": 1
+          },
+          "combos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fk_idCombo": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fk_idProduct": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          },
+          "observation": {
+            "type": "string",
+            "example": "Some Observations"
+          }
+        },
+        "xml": {
+          "name": "AddOrderProduct"
+        }
+      },
+      "AddCampaignCustomer": {
+        "type": "object",
+        "properties": {
+          "fk_idCampaign": {
+            "type": "number",
+            "example": 1
+          },
+          "fk_idCustomer": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "AddCampaignCustomer"
+        }
+      }
+    }
+  }
+}
