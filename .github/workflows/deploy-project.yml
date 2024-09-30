@@ -63,7 +63,7 @@ jobs:
     needs: deploy-app-argocd
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@feat/adds-news-workflows
     with:
-      destination_repo: 'https://github.com/team-tech-challenge/tech-challenge-manifest.git'
+      destination_repo: 'team-tech-challenge/tech-challenge-manifest'
       destination_branch: 'development'
     secrets:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
