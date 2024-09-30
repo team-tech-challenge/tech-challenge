@@ -1,4 +1,4 @@
-name: 'Deploy Project with ArgoCD'
+name: 'Deploy Project'
 
 on:
   push:
