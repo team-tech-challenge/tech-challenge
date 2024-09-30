@@ -59,7 +59,7 @@ jobs:
       TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}
       EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
 
-  change-tag-version:
+  change-tag:
     needs: deploy-app-argocd
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@feat/adds-news-workflows
     with:
