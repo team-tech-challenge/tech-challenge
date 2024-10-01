@@ -23,7 +23,7 @@ USER tech
 WORKDIR /app
 
 # Copia apenas os artefatos necessários do estágio de build
-COPY --from=build /app /app
+COPY --from=build /app-argocd /app
 
 # Expõe a porta em que sua aplicação rodará
 EXPOSE 3000

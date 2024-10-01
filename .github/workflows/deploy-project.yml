@@ -1,9 +1,11 @@
-name: 'Deploy Projects'
+name: 'Deploy Project'
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - development
+      - main
 
 permissions:
   contents: write
@@ -12,7 +14,7 @@ permissions:
 
 jobs:
   create-ecr:
-    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-elastic-container-registry.yml@feat/adds-news-workflows
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-elastic-container-registry.yml@main
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -26,7 +28,7 @@ jobs:
 
   build-push:
     needs: create-ecr
-    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/build-image-and-push.yml@feat/adds-news-workflows
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/build-image-and-push.yml@main
     secrets:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -36,7 +38,7 @@ jobs:
 
   app-argocd:
     needs: build-push
-    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-argocd-app.yml@feat/adds-news-workflows
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-argocd-app.yml@main
     with:
       environment: 'production'
     secrets:
@@ -52,10 +54,10 @@ jobs:
 
   change-tag:
     needs: app-argocd
-    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@feat/adds-news-workflows
+    uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@main
     with:
       destination_repo: 'team-tech-challenge/tech-challenge-manifest'
-      destination_branch: 'development'
+      destination_branch: 'main'
     secrets:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

@@ -19,7 +19,7 @@ spec:
             source:
                 repoURL: 'https://github.com/team-tech-challenge/tech-challenge-manifest.git'
                 path: app/charts
-                targetRevision: development
+                targetRevision: HEAD
             destination:
                 server: '{{url}}'
                 namespace: core
@@ -30,3 +30,4 @@ spec:
                 syncOptions:
                     - CreateNamespace=true
                     - PruneLast=true
+                    - ApplyOutOfSyncOnly=true
