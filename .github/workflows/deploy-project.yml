@@ -1,4 +1,4 @@
-name: 'Deploy Project'
+name: 'Deploy Application'
 
 on:
   pull_request:
@@ -36,7 +36,7 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
 
-  app-argocd:
+  apps-argocd:
     needs: build-push
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/create-argocd-app.yml@main
     with:
@@ -53,7 +53,7 @@ jobs:
       EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
 
   change-tag:
-    needs: app-argocd
+    needs: apps-argocd
     uses: team-tech-challenge/terraform-reusable-actions/.github/workflows/deploy-argocd.yml@main
     with:
       destination_repo: 'team-tech-challenge/tech-challenge-manifest'
