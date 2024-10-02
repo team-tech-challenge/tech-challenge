@@ -1,69 +1,71 @@
 import { CustomerUseCase } from "@usecases/CustomerUseCase";
-import { defaultReturnStatement, formatObjectResponse } from "@utils/http";
+import { Customer } from "@entities/Customer";
+import { defaultReturnStatement, formatObjectResponse, handleError } from "@utils/http";
 
 export class CustomerController {
-	constructor(private customerUseCase: CustomerUseCase) { }
+    constructor(private readonly customerUseCase: CustomerUseCase) {}
 
-	async getAll(req, res) {
-		try {
-			const customers = await this.customerUseCase.getAll();
-			defaultReturnStatement(res, "Customers", customers);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
-	}
+    async getAll(req, res): Promise<void> {
+        try {
+            const customers = await this.customerUseCase.getAll();
+            res.status(200).json(customers);
+        } catch (error) {
+            handleError(res, error);
+        }
+    }
 
-	async createCustomer(req, res) {
-		try {
-			const customer = await this.customerUseCase.createCustomer(req.body);
-			defaultReturnStatement(res, "Customer Created", customer);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
-	}
+    async createCustomer(req, res): Promise<void> {
+        try {  
+            const {cpf, name,phoneNumber,email } = req.body
+			const customerData = new Customer(cpf,name,phoneNumber,email);    
+            const customer = await this.customerUseCase.createCustomer(customerData);
+            res.status(201).json(customer);
+        } catch (error) {
+            handleError(res, error);
+        }
+    }
 
-	async searchCustomer(req, res) {
-		try {
-			const customer = await this.customerUseCase.searchCustomer(req.params.cpf);
-			defaultReturnStatement(res, "Customer Found", customer);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
-	}
+    async searchCustomer(req, res): Promise<void> {
+        try {
+            const { cpf } = req.params;
+            
+            const customer = await this.customerUseCase.searchCustomer(cpf);            
+            res.status(200).json(customer);
+             
+        } catch (error) {
+            handleError(res, error);
+        }
+    }
 
-	async updateCustomer(req, res) {
-		try {
-			const customer = await this.customerUseCase.updateCustomer(req.params.id, req.body);
-			defaultReturnStatement(res, "Customer Updated", customer);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
-	}
+    async updateCustomer(req, res): Promise<void> {
+        try {
+            const { id } = req.params;
+            const {cpf, name,phoneNumber,email } = req.body
+			const customerData = new Customer(cpf,name,phoneNumber,email);	                    
+            await this.customerUseCase.updateCustomer(Number(id), customerData);            
+            res.status(200).json({ message: "Customer updated successfully" });            
+        } catch (error) {
+            handleError(res, error);
+        }
+    }
 
-	async deleteCustomer(req, res) {
-		try {
-			await this.customerUseCase.deleteCustomer(req.params.id);
-			defaultReturnStatement(res, "Customer Deleted", "Operation executed successfully.");
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
-	}
+    async deleteCustomer(req, res): Promise<void> {
+        try {
+            const { id } = req.params;
+            await this.customerUseCase.deleteCustomer(Number(id));            
+            res.status(200).json({ message: "Customer deleted successfully" });            
+        } catch (error) {
+            handleError(res, error);
+        }
+    }
 
-	async getCustomerCampaigns(req, res) {
-		try {
-			const campaigns = await this.customerUseCase.getCustomerCampaigns(req.params.id);
-			res.json({
-				status: 200,
-				Campaigns: formatObjectResponse(campaigns, "campaign"),
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
-	}
+    async getCustomerCampaigns(req, res): Promise<void> {
+        try {
+            const { id } = req.params;
+            const campaigns = await this.customerUseCase.getCustomerCampaigns(id);
+            res.status(200).json(campaigns);
+        } catch (error) {
+            handleError(res, error);
+        }
+    }
 }

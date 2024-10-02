@@ -1,6 +1,7 @@
-import { Table, Column, DataType, Model } from "sequelize-typescript";
-import { ForeignKey } from "sequelize";
+import { Table, Column, DataType, Model, HasMany, BelongsTo, ForeignKey } from "sequelize-typescript";
 import { Category } from "@database/CategoryModel";
+import { ComboProduct } from "@database/ComboProductModel";
+import { OrderProduct } from "@database/OrderProductModel";
 
 @Table({
 	timestamps: true,
@@ -15,10 +16,12 @@ export class Product extends Model {
 	})
 	declare id: number;
 
-	@Column({
+	@ForeignKey(() => Category)
+	@Column({		
 		type: DataType.INTEGER,
+		allowNull: false,
 	})
-	declare fk_idCategory: ForeignKey<Category["id"]>;
+	declare categoryId: number;
 
 	@Column({
 		type: DataType.STRING,
@@ -38,5 +41,15 @@ export class Product extends Model {
 	})
 	price: number;
 
+	// Relacionamento de Muitos para Um com Category
+	@BelongsTo(() => Category)
+	declare category: Category;
 
+	@HasMany(() => ComboProduct)
+	declare comboproduct: ComboProduct[];
+
+	@HasMany(() => OrderProduct)
+	declare orderproduct: OrderProduct[];
+
+	
 }

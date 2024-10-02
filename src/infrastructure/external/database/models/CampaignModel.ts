@@ -1,4 +1,6 @@
-import { Table, Column, DataType, Model } from "sequelize-typescript";
+import { Table, Column, DataType, Model, HasMany } from "sequelize-typescript";
+import { Order } from "@database/OrderModel";
+import { CampaignCustomer } from "./CampaignCustomerModel";
 
 @Table({
 	timestamps: true,
@@ -37,4 +39,11 @@ export class Campaign extends Model {
 		allowNull: true,
 	})
 	discount: number;
+
+	@HasMany(() => CampaignCustomer)
+	campaigncustomer: CampaignCustomer[];
+
+	// Relacionamento de Um para Muitos com Order
+	@HasMany(() => Order)
+	order: Order[];
 }

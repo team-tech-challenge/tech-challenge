@@ -18,6 +18,11 @@ productRoute.get("/all", (req, res) => {
 	productController.getAll(req, res);
 });
 
+productRoute.get("/:Id", (req, res) => {
+	// #swagger.tags = ['Product']
+	productController.getProductById(req, res);
+});
+
 productRoute.post("/create", (req, res) => {
 	// #swagger.tags = ['Product']
 	/* #swagger.requestBody = {

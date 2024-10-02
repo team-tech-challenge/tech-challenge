@@ -1,5 +1,6 @@
 import { EmployeeUseCase } from "@usecases/EmployeeUseCase";
 import { defaultReturnStatement } from "@utils/http";
+import { Employee } from "@entities/Employee";
 
 export class EmployeeController {
 	constructor(private employeeUseCase: EmployeeUseCase) { }
@@ -10,17 +11,19 @@ export class EmployeeController {
 			defaultReturnStatement(res, "Employees", employees);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 
 	async createEmployee(req, res) {
 		try {
-			const employee = await this.employeeUseCase.createEmployee(req.body);
+			const {cpf, name, username, password} = req.body
+			const employeeData = new Employee(cpf,name,username,password);	
+			const employee = await this.employeeUseCase.createEmployee(employeeData);
 			defaultReturnStatement(res, "Employee Created", employee);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 
@@ -30,7 +33,7 @@ export class EmployeeController {
 			defaultReturnStatement(res, "Employee Found", employee);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 
@@ -40,7 +43,7 @@ export class EmployeeController {
 			defaultReturnStatement(res, "Employee Updated", employee);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 
@@ -50,7 +53,7 @@ export class EmployeeController {
 			defaultReturnStatement(res, "Employee Deleted", "Operation executed successfully.");
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 }

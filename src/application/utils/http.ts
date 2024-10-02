@@ -8,8 +8,14 @@ const defaultReturnStatement = (
 
 const formatObjectResponse = (includedObject, objectName: string) => {
 	let result = [];
-	includedObject.map((object) => { result.push(object[objectName][0]); });
+	includedObject.map((object) => { 		
+		result.push(object[objectName]['dataValues']); 
+	});
 	return result;
 };
 
-export { defaultReturnStatement, formatObjectResponse };
+const handleError = (res, error) => {
+	return res.status(500).json({ error: error.message });
+}
+
+export { defaultReturnStatement, formatObjectResponse, handleError };

@@ -6,13 +6,27 @@ export class ProductController {
 
 	async getAll(req, res) {
 		try {
-			const products = await this.productUseCase.getAll();
+			const products = await this.productUseCase.getAll();			
 			defaultReturnStatement(res, "Products", products);
 		} catch (err) {
 			console.error(err);
 			res.status(500).json({ status: 500, error: err });
 		}
 	}
+
+	async getProductById(req, res): Promise<void> {
+        try {
+            const { Id } = req.params;
+            const product = await this.productUseCase.getProductById(Id);
+            if (product) {
+                res.json(product);
+            } else {
+                res.status(404).json({ error: "Product not found" });
+            }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 
 	async getProductByCategory(req, res) {
 		try {

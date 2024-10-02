@@ -1,5 +1,7 @@
 import { IProductGateway } from "@gateways/IProductGateway";
+import { ICategoryGateway } from "@gateways/ICategoryGateway";
 import { Product } from "@entities/Product";
+import { ProductNotFoundError } from "@utils/errors/productErrors";
 
 export class ProductUseCase {
 	constructor(private readonly productGateway: IProductGateway) { }
@@ -10,36 +12,24 @@ export class ProductUseCase {
 
 	async getProductByCategory(categoryId: string): Promise<any> {
 		return await this.productGateway.allProducts({
-			where: { fk_idCategory: categoryId },
+			where: { categoryId: categoryId },
 		});
 	}
 
-	async createProduct(data: Partial<Product>): Promise<Product> {
-		const { fk_idCategory, name, description, price } = data;
-		const product = new Product(fk_idCategory, name, description, price);
-		return await this.productGateway.newProduct(product);
+	async getProductById(id: number): Promise<Product | null> {
+		const product = await this.productGateway.getProductById(id);
+		return product ? product : null;
+	}
+	
+	async createProduct(data: Product): Promise<Product> {		
+		return await this.productGateway.newProduct(data);
 	}
 
-	async updateProduct(id: number, productData: Product): Promise<any> {
-		const { name, price, description, fk_idCategory } = productData;
-		if (!id) throw new Error("Missing required field: id");
-
-		const [updatedCount] = await this.productGateway.updateProduct(
-			{
-				name,
-				price,
-				description,
-				fk_idCategory,
-			},
-			{
-				where: { id },
-			}
-		);
-
-		if (updatedCount === 0) throw new Error("Product not found");
-
-		return "Product updated successfully";
-	}
+	async updateProduct(id: number, data: Product): Promise<void> {
+        const product = await this.getProductById(id);
+        if (!product) throw new ProductNotFoundError("product not found");
+        this.productGateway.updateProduct(id, data);
+    }
 
 	async deleteProduct(productId: string): Promise<number> {
 		if (!productId) throw new Error("Missing required parameter: id");

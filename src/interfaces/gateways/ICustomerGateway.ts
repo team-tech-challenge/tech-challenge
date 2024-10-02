@@ -3,18 +3,15 @@ import { Customer } from "@entities/Customer";
 export interface ICustomerGateway {
 	allCustomers(): Promise<Customer[]>;
 
+	getCustomerById(id: number): Promise<Customer>;
+	
 	newCustomer(customer: Customer): Promise<Customer>;
-
-	getCustomerById(condition?: any): Promise<Customer[]>;
 
 	searchCustomer(cpf: string): Promise<Customer>;
 
-	updateCustomer(
-		id: number,
-		customer: Customer
-	): Promise<[affectedCount: number]>;
+	updateCustomer(id: number, customer: Customer): Promise<void>;
 
-	deleteCustomer(id: number): Promise<number>;
+	deleteCustomer(id: number): Promise<void>;
 
-	campaignOfCustomers(id: string): Promise<any[]>;
+	campaignOfCustomers(id: number): Promise<any[]>;
 }

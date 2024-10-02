@@ -1,18 +1,16 @@
 import { Campaign } from "@entities/Campaign";
+import { CampaignCustomer } from "@entities/CampaignCustomer";
 
 export interface ICampaignGateway {
 	allCampaigns(): Promise<Campaign[]>;
 
-	getCampaignById(condition?: any): Promise<Campaign[]>;
+	getCampaignById(id: number): Promise<Campaign>;
 
 	newCampaign(campaign: Campaign): Promise<Campaign>;
 
-	newCampaignAssociation(values: any): Promise<any>;
+	newCampaignAssociation(values: any): Promise<void>;
 
-	updateCampaign(
-		id: number,
-		campaign: Campaign
-	): Promise<[affectedCount: number]>;
+	updateCampaign(id: number, campaign: Campaign): Promise<void>;
 
-	customersOfCampaign(id: string): Promise<any[]>;
+	customersOfCampaign(campaignId: number, customerId?: number): Promise<CampaignCustomer[]>;
 }

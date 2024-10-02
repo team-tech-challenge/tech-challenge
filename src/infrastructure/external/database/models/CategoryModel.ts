@@ -1,4 +1,5 @@
-import { Table, Column, DataType, Model } from "sequelize-typescript";
+import { Table, Column, DataType, Model, HasMany } from "sequelize-typescript";
+import { Product } from "@database/ProductModel";
 
 @Table({
 	timestamps: true,
@@ -18,4 +19,8 @@ export class Category extends Model {
 		allowNull: false,
 	})
 	name: string;
+
+	// Relacionamento de Um para Muitos com Product
+	@HasMany(() => Product)
+	product: Product[];
 }

@@ -1,4 +1,6 @@
-import { Table, Column, DataType, Model } from "sequelize-typescript";
+import { Table, Column, DataType, Model, HasMany } from "sequelize-typescript";
+import { ComboProduct } from "@database/ComboProductModel";
+import { OrderProduct } from "@database/OrderProductModel";
 
 @Table({
 	timestamps: true,
@@ -24,6 +26,15 @@ export class Combo extends Model {
 	})
 	declare discount: number;
 
+	// Relacionamento de Um para Muitos com ComboProduct
+	@HasMany(() => ComboProduct)
+	comboproduct: ComboProduct[];
+
+	// Relacionamento de Um para Muitos com OrderProduct
+	@HasMany(() => OrderProduct)
+	orderproduct: OrderProduct[];
+
 }
+
 
 

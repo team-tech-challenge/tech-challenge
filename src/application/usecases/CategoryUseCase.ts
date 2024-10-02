@@ -8,9 +8,12 @@ export class CategoryUseCase {
 		return await this.categoryGateway.allCategories();
 	}
 
-	async createCategory(data: Partial<Category>): Promise<Category> {
-		const { name } = data;
-		const category = new Category(name);
-		return await this.categoryGateway.newCategory(category);
+	async getCategoryById(id: number): Promise<Category | null> {
+		const category = await this.categoryGateway.getCategoryById(id);
+		return category ? category : null;
+	}
+
+	async createCategory(data: Category): Promise<Category> {
+		return await this.categoryGateway.newCategory(data);
 	}
 }
