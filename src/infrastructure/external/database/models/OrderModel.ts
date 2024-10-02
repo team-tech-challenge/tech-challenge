@@ -1,7 +1,8 @@
-import { ForeignKey } from "sequelize";
-import { Table, Column, DataType, Model } from "sequelize-typescript";
+import { Table, Column, DataType, Model, BelongsTo, HasMany, ForeignKey  } from "sequelize-typescript";
 import { Customer } from "@database/CustomerModel";
 import { Campaign } from "@database/CampaignModel";
+import { Payment } from "@database/PaymentModel";
+import { OrderProduct } from "@database/OrderProductModel";
 
 @Table({
 	timestamps: true,
@@ -16,15 +17,21 @@ export class Order extends Model {
 	})
 	declare id: number;
 
-	@Column({
+	// Chave estrangeira para Customer	
+	@ForeignKey(() => Customer)
+	@Column({		
 		type: DataType.INTEGER,
+		allowNull: true,
 	})
-	declare fk_idCustomer: ForeignKey<Customer["id"]>;
+	declare customerId: number;
 
-	@Column({
+	// Chave estrangeira para Campaign	
+	@ForeignKey(() => Campaign)
+	@Column({		
 		type: DataType.INTEGER,
+		allowNull: true,
 	})
-	declare fk_idCampaign: ForeignKey<Campaign["id"]>;
+	declare campaignId: number;
 
 	@Column({
 		type: DataType.STRING,
@@ -36,5 +43,21 @@ export class Order extends Model {
 		type: DataType.FLOAT,
 		allowNull: false,
 	})
-	price: string;
+	price: number;
+
+	// Relacionamento com Customer (Muitos para Um)
+	@BelongsTo(() => Customer)
+	customer: Customer;
+
+	// Relacionamento com Campaign (Muitos para Um)
+	@BelongsTo(() => Campaign)
+	campaign: Campaign;
+
+	// Relacionamento de Um para Muitos com Payment
+	@HasMany(() => Payment)
+	payments: Payment[];
+
+	// Relacionamento de Um para Muitos com OrderProduct
+	@HasMany(() => OrderProduct)
+	orderproduct: OrderProduct[];
 }

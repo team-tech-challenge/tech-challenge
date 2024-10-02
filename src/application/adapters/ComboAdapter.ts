@@ -1,49 +1,56 @@
-import { Op } from "sequelize";
-import { Combo } from "@database/ComboModel";
-import { Product } from "@database/ProductModel";
-import { ComboProduct } from "@database/ComboProductModel";
+import { Combo as ComboModel } from "@database/ComboModel";
+import { Product as ProductModel } from "@database/ProductModel";
+import { ComboProduct as ComboProducModel } from "@database/ComboProductModel";
 import { IComboGateway } from "@gateways/IComboGateway";
+import { Combo } from "@entities/Combo";
+import { ComboMapper } from "@mappers/ComboMapper";
+import { ProductMapper } from "@mappers/ProductMapper";
+import { Product } from "@entities/Product";
+import { ComboProduct } from "@entities/ComboProduct";
+import { ComboProductMapper } from "@mappers/ComboProductMapper";
 
 export class ComboAdapter implements IComboGateway {
 
-	allCombos(): Promise<Combo[]> {
-		return Combo.findAll();
+	async allCombos(): Promise<Combo[]> {
+		const comboModels = await ComboModel.findAll();
+        return comboModels.map(model => ComboMapper.toEntity(model));		
 	}
 
-	getComboById(params?: any): Promise<Combo[]> {
-		return Combo.findAll(params);
+	async getComboById(id: number): Promise<Combo> {
+        const comboModel = await ComboModel.findOne({ where: { id } });
+        return ComboMapper.toEntity(comboModel);
+    }
+
+	async newCombo(values: any): Promise<Combo> {
+		const comboModels = await ComboModel.create(values);
+        return ComboMapper.toEntity(comboModels);		
 	}
 
-	newCombo(values: any): Promise<Combo> {
-		return Combo.create(values);
+	async newProductAssociation(values: any): Promise<ComboProduct> {
+		try {
+			const comboProductModel = ComboProducModel.create(values);
+			return ComboProductMapper.toEntity(comboProductModel);
+		} catch (error) {
+			console.error(error);
+			throw new Error("Product not association");
+		}
+		
 	}
 
-	newProductAssociation(values: any): Promise<ComboProduct> {
-		return ComboProduct.create(values);
-	}
-
-	productsOfCombo(id: string): Promise<ComboProduct[]> {
-		return ComboProduct.findAll({
-			where: { fk_idCombo: id },
-			include:[
+	async productsOfCombo(id: number): Promise<ComboProduct[]> {
+		const comboProductRecords =  await ComboProducModel.findAll({
+			where: { comboId: id },
+			include: [
 				{
-					model:Combo,
-					on: {
-						"$combo.id$": {
-							[Op.col]: "ComboProduct.fk_idCombo",
-						},
-					},
-				},
-				{
-					model:Product,
-					on: {
-						"$product.id$": {
-							[Op.col]: "ComboProduct.fk_idProduct",
-						},
-					},
-
-				}
-			]
+					model: ProductModel,
+					as: 'product'
+				}]			
 		});
+
+		if (!comboProductRecords) {
+            throw new Error("Products not found");
+        }
+		return comboProductRecords.map((comboProductRecord) => ComboProductMapper.toEntity(comboProductRecord));	
 	}
+	
 }

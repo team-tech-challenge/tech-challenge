@@ -15,7 +15,7 @@ export class CategoryController {
 	}
 
 	async createCategory(req, res) {
-		try {
+		try {			
 			const category = await this.categoryUseCase.createCategory(req.body);
 			defaultReturnStatement(res, "Category Created", category);
 		} catch (err) {

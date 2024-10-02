@@ -1,4 +1,6 @@
-import { Table, Column, DataType, Model } from "sequelize-typescript";
+
+import { Table, Column, DataType, Model, BelongsTo, ForeignKey } from "sequelize-typescript";
+import { Order } from "@database/OrderModel";
 
 @Table({
 	timestamps: true,
@@ -31,9 +33,14 @@ export class Payment extends Model {
 	})
 	status: string;
 
-	@Column({
+	@ForeignKey(() => Order)
+	@Column({		
 		type: DataType.INTEGER,
 		allowNull: false,
 	})
-	fk_idOrder: number;
+	orderId: number;
+
+	// Relacionamento de Muitos para Um com Order
+	@BelongsTo(() => Order)
+	order: Order;
 }

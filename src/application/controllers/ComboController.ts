@@ -1,16 +1,17 @@
 import { ComboUseCase } from "@usecases/ComboUseCase";
 import { defaultReturnStatement, formatObjectResponse } from "@utils/http";
 
+
 export class ComboController {
 	constructor(private comboUseCase: ComboUseCase) { }
 
 	async getAll(req, res) {
 		try {
 			const combos = await this.comboUseCase.getAll();
-			defaultReturnStatement(res, "Combos", combos);
+			res.json(combos)
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({error: err });
 		}
 	}
 
@@ -18,34 +19,30 @@ export class ComboController {
 		try {
 			const comboId = req.params.Id;
 			const combo = await this.comboUseCase.getComboById(comboId);
-			defaultReturnStatement(res, "Orders", combo);
+			res.json(combo);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({error: err });
 		}
 	}
 
 	async createCombo(req, res) {
-		try {
+		try {			
 			const combo = await this.comboUseCase.createCombo(req.body);
-			defaultReturnStatement(res, "Combo Created", combo);
+			res.json(combo);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({error: err });
 		}
 	}
 
 	async createComboProductAssociation(req, res) {
 		try {
 			await this.comboUseCase.createComboProductAssociation(req.body);
-			defaultReturnStatement(
-				res,
-				"Product Association Created",
-				"Operation executed successfully."
-			);
+			res.json("Product Association Created")
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({error: err });
 		}
 	}
 
@@ -53,13 +50,10 @@ export class ComboController {
 		try {
 			const comboID = req.params.id;
 			const products = await this.comboUseCase.getComboProducts(comboID);
-			res.json({
-				status: 200,
-				Products: formatObjectResponse(products, "product"),
-			});
+			res.json(products);			
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({error: err });
 		}
 	}
 }

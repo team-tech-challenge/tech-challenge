@@ -1,5 +1,5 @@
 import { CampaignUseCase } from "@usecases/CampaignUseCase";
-import { defaultReturnStatement, formatObjectResponse } from "@utils/http";
+import { defaultReturnStatement, formatObjectResponse, handleError } from "@utils/http";
 
 export class CampaignController {
 	constructor(private campaignUseCase: CampaignUseCase) { }
@@ -10,7 +10,7 @@ export class CampaignController {
 			defaultReturnStatement(res, "Campaigns", campaigns);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 
@@ -21,51 +21,48 @@ export class CampaignController {
 			defaultReturnStatement(res, "Campaign", campaign);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message });
 		}
 	}
 
 	async createCampaign(req, res) {
-		try {
-			const campaign = await this.campaignUseCase.createCampaign({ ...req.body });
-			defaultReturnStatement(res, "Campaign Created", campaign);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
+		try {            
+            
+            const campaign = await this.campaignUseCase.createCampaign(req.body);
+            res.status(201).json(campaign);
+        } catch (err) {
+            handleError(res, err);
+        }		
 	}
 
 	async createCampaignCustomerAssociation(req, res) {
 		try {
-			const association = await this.campaignUseCase.createCampaignCustomerAssociation({ ...req.body });
-			defaultReturnStatement(res, "Customer Association Created", association);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			await this.campaignUseCase.createCampaignCustomerAssociation({ ...req.body });
+			res.status(200).json({ message: "Customer Association Created" });			
+		} catch (err) {			
+			res.status(400).json({ error: err.message });
 		}
 	}
 
 	async updateCampaign(req, res) {
 		try {
-			const campaign = await this.campaignUseCase.updateCampaign(req.params.id, { ...req.body });
-			defaultReturnStatement(res, "Campaign Updated", campaign);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ status: 500, error: err });
-		}
+            const { id } = req.params; 
+            await this.campaignUseCase.updateCampaign(id, req.body);            
+            res.status(200).json({ message: "Campaign updated successfully" });
+            
+        } catch (err) {
+            handleError(res, err.message);
+        }
 	}
 
 	async getCampaignCustomers(req, res) {
 		try {
 			const campaignId = req.params.id;
-			const customers = await this.campaignUseCase.getCampaignCustomers(campaignId);
-			res.json({
-				status: 200,
-				Customers: formatObjectResponse(customers, "customer"),
-			});
+			const customers = await this.campaignUseCase.getCampaignCustomers(campaignId);			
+			res.json(customers);
 		} catch (err) {
 			console.error(err);
-			res.status(500).json({ status: 500, error: err });
+			res.status(400).json({ error: err.message.message });
 		}
 	}
 }

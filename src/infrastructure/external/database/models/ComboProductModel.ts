@@ -1,6 +1,5 @@
-import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
+import { Table, Model, Column, DataType, BelongsTo, ForeignKey } from "sequelize-typescript";
 import { Combo } from "@database/ComboModel";
-import { ForeignKey, NonAttribute } from "sequelize";
 import { Product } from "@database/ProductModel";
 
 @Table({
@@ -10,26 +9,26 @@ import { Product } from "@database/ProductModel";
 })
 export class ComboProduct extends Model {
 
-	@Column({
+	@ForeignKey(() => Combo)
+	@Column({		
 		type: DataType.INTEGER,
 		allowNull: true,
 	})
-	declare fk_idCombo: ForeignKey<Combo["id"]>;
+	declare comboId: number;
 
-	@Column({
+	@ForeignKey(() => Product)
+	@Column({		
 		type: DataType.INTEGER,
 		allowNull: true,
 	})
-	declare fk_idProduct: ForeignKey<Product["id"]>;
+	declare productId: number;
 
-	@HasMany(() => Combo, {
-		foreignKey: 'fk_idCombo',
-	})
-	declare combo?: NonAttribute<Combo[]>;
+	// Relacionamento de Muitos para Um com Combo
+	@BelongsTo(() => Combo)
+	combo: Combo;
 
-	@HasMany(() => Product, {
-		foreignKey: 'fk_idProduct'
-	})
-	declare product?: NonAttribute<Product[]>;
+	// Relacionamento de Muitos para Um com Product
+	@BelongsTo(() => Product)
+	product: Product;
 
 }

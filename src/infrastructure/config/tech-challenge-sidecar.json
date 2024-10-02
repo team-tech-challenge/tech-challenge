@@ -129,7 +129,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Sanduíche com carne bovina, alface, bacon, avocado e molho picante\",\n  \"price\": \"32.50\",\n  \"description\": \"Saboreie a perfeição em cada mordida com nosso irresistível sanduíche gourmet.\",\n  \"fk_idCategory\": 1\n}",
+							"raw": "{\n  \"name\": \"Sanduíche com carne bovina, alface, bacon, avocado e molho picante\",\n  \"price\": \"32.50\",\n  \"description\": \"Saboreie a perfeição em cada mordida com nosso irresistível sanduíche gourmet.\",\n  \"categoryId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -156,7 +156,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Sanduíche de frango com queijo suíço, rúcula, tomate e molho de maionese temperada\",\n  \"price\": \"25.50\",\n  \"description\": \"Delicie-se com o nosso sanduíche de frango gourmet, uma combinação perfeita de sabores frescos e deliciosos.\",\n  \"fk_idCategory\": 1\n}",
+							"raw": "{\n  \"name\": \"Sanduíche de frango com queijo suíço, rúcula, tomate e molho de maionese temperada\",\n  \"price\": \"25.50\",\n  \"description\": \"Delicie-se com o nosso sanduíche de frango gourmet, uma combinação perfeita de sabores frescos e deliciosos.\",\n  \"categoryId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -183,7 +183,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Sanduíche de frango do chef\",\n  \"price\": \"33.50\",\n  \"description\": \"Começamos com um suculento hambúrguer de frango, grelhado até a perfeição para garantir a máxima suculência e sabor.\",\n  \"fk_idCategory\": 1\n}",
+							"raw": "{\n  \"name\": \"Sanduíche de frango do chef\",\n  \"price\": \"33.50\",\n  \"description\": \"Começamos com um suculento hambúrguer de frango, grelhado até a perfeição para garantir a máxima suculência e sabor.\",\n  \"categoryId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -210,7 +210,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Sanduíche de linguiça\",\n  \"price\": \"26.50\",\n  \"description\": \"Este sanduíche combina o sabor rico da linguiça caseira com o robusto queijo cheddar, a doçura da cebola caramelizada e o toque picante do molho de mostarda, tudo envolto no nutritivo Pão da casa.\",\n  \"fk_idCategory\": 1\n}",
+							"raw": "{\n  \"name\": \"Sanduíche de linguiça\",\n  \"price\": \"26.50\",\n  \"description\": \"Este sanduíche combina o sabor rico da linguiça caseira com o robusto queijo cheddar, a doçura da cebola caramelizada e o toque picante do molho de mostarda, tudo envolto no nutritivo Pão da casa.\",\n  \"categoryId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -237,7 +237,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Coca-cola\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de cola\",\n  \"fk_idCategory\": 2\n}",
+							"raw": "{\n  \"name\": \"Coca-cola\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de cola\",\n  \"categoryId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -264,7 +264,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Suco de laranja\",\n  \"price\": \"10\",\n  \"description\": \"Suco 100% natural\",\n  \"fk_idCategory\": 2\n}",
+							"raw": "{\n  \"name\": \"Suco de laranja\",\n  \"price\": \"10\",\n  \"description\": \"Suco 100% natural\",\n  \"categoryId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -291,7 +291,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Coca-cola zero açucar\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de cola sem açúcar\",\n  \"fk_idCategory\": 2\n}",
+							"raw": "{\n  \"name\": \"Coca-cola zero açucar\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de cola sem açúcar\",\n  \"categoryId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -318,7 +318,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Guaraná\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de guaraná\",\n  \"fk_idCategory\": 2\n}",
+							"raw": "{\n  \"name\": \"Guaraná\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de guaraná\",\n  \"categoryId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,7 +345,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Soda\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de limão\",\n  \"fk_idCategory\": 2\n}",
+							"raw": "{\n  \"name\": \"Soda\",\n  \"price\": \"10\",\n  \"description\": \"Refrigerante de limão\",\n  \"categoryId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,7 +372,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Suco de uva\",\n  \"price\": \"10\",\n  \"description\": \"Suco 100% integral\",\n  \"fk_idCategory\": 2\n}",
+							"raw": "{\n  \"name\": \"Suco de uva\",\n  \"price\": \"10\",\n  \"description\": \"Suco 100% integral\",\n  \"categoryId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -399,7 +399,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Sanduíche vegetariano\",\n  \"price\": \"30.50\",\n  \"description\": \"Este sanduíche vegetariano oferece uma combinação deliciosa de sabores e texturas, com a carne de soja marinada como destaque principal, tudo envolto no saboroso Pão de Centeio.\",\n  \"fk_idCategory\": 1\n}",
+							"raw": "{\n  \"name\": \"Sanduíche vegetariano\",\n  \"price\": \"30.50\",\n  \"description\": \"Este sanduíche vegetariano oferece uma combinação deliciosa de sabores e texturas, com a carne de soja marinada como destaque principal, tudo envolto no saboroso Pão de Centeio.\",\n  \"categoryId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -426,7 +426,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Batatas Fritas da Casa\",\n  \"price\": \"15\",\n  \"description\": \"Batatas cortadas em palitos e fritas até ficarem douradas e crocantes, temperadas com sal e ervas para um toque extra de sabor.\",\n  \"fk_idCategory\": 3\n}",
+							"raw": "{\n  \"name\": \"Batatas Fritas da Casa\",\n  \"price\": \"15\",\n  \"description\": \"Batatas cortadas em palitos e fritas até ficarem douradas e crocantes, temperadas com sal e ervas para um toque extra de sabor.\",\n  \"categoryId\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -453,7 +453,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Aneis de cebola\",\n  \"price\": \"15\",\n  \"description\": \"Fatias generosas de cebola são mergulhadas em uma massa leve e crocante, antes de serem fritas até a perfeição.\",\n  \"fk_idCategory\": 3\n}",
+							"raw": "{\n  \"name\": \"Aneis de cebola\",\n  \"price\": \"15\",\n  \"description\": \"Fatias generosas de cebola são mergulhadas em uma massa leve e crocante, antes de serem fritas até a perfeição.\",\n  \"categoryId\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -480,7 +480,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Cheesecake de Frutas Vermelhas\",\n  \"price\": \"30\",\n  \"description\": \"Uma base de biscoito amanteigado coberta com um recheio cremoso de queijo, decorado com uma variedade de frutas vermelhas frescas como morangos, framboesas e amoras.\",\n  \"fk_idCategory\": 4\n}",
+							"raw": "{\n  \"name\": \"Cheesecake de Frutas Vermelhas\",\n  \"price\": \"30\",\n  \"description\": \"Uma base de biscoito amanteigado coberta com um recheio cremoso de queijo, decorado com uma variedade de frutas vermelhas frescas como morangos, framboesas e amoras.\",\n  \"categoryId\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -507,7 +507,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Torta de Maçã com Sorvete de Baunilha\",\n  \"price\": \"30\",\n  \"description\": \"Uma torta de maçã caseira, recheada com maçãs fatiadas, canela e açúcar mascavo, servida quente com uma generosa bola de sorvete de baunilha.\",\n  \"fk_idCategory\": 4\n}",
+							"raw": "{\n  \"name\": \"Torta de Maçã com Sorvete de Baunilha\",\n  \"price\": \"30\",\n  \"description\": \"Uma torta de maçã caseira, recheada com maçãs fatiadas, canela e açúcar mascavo, servida quente com uma generosa bola de sorvete de baunilha.\",\n  \"categoryId\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -534,7 +534,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Creme Brûlée\",\n  \"price\": \"30\",\n  \"description\": \"Uma sobremesa clássica de restaurante que você pode fazer em casa.\",\n  \"fk_idCategory\": 4\n}",
+							"raw": "{\n  \"name\": \"Creme Brûlée\",\n  \"price\": \"30\",\n  \"description\": \"Uma sobremesa clássica de restaurante que você pode fazer em casa.\",\n  \"categoryId\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -561,7 +561,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Tiramisu\",\n  \"price\": \"30\",\n  \"description\": \"Camadas de biscoitos de champanhe embebidos em café, intercaladas com um creme de queijo mascarpone, tudo polvilhado com cacau em pó.\",\n  \"fk_idCategory\": 4\n}",
+							"raw": "{\n  \"name\": \"Tiramisu\",\n  \"price\": \"30\",\n  \"description\": \"Camadas de biscoitos de champanhe embebidos em café, intercaladas com um creme de queijo mascarpone, tudo polvilhado com cacau em pó.\",\n  \"categoryId\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -706,7 +706,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 1,\n  \"fk_idProduct\": 1\n}",
+							"raw": "{\n  \"comboId\": 1,\n  \"productId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -735,7 +735,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 1,\n  \"fk_idProduct\": 5\n}",
+							"raw": "{\n  \"comboId\": 1,\n  \"productId\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -764,7 +764,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 1,\n  \"fk_idProduct\": 12\n}",
+							"raw": "{\n  \"comboId\": 1,\n  \"productId\": 12\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -793,7 +793,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 2,\n  \"fk_idProduct\": 3\n}",
+							"raw": "{\n  \"comboId\": 2,\n  \"productId\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -822,7 +822,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 2,\n  \"fk_idProduct\": 8\n}",
+							"raw": "{\n  \"comboId\": 2,\n  \"productId\": 8\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -851,7 +851,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 2,\n  \"fk_idProduct\": 13\n}",
+							"raw": "{\n  \"comboId\": 2,\n  \"productId\": 13\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -880,7 +880,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 3,\n  \"fk_idProduct\": 15\n}",
+							"raw": "{\n  \"comboId\": 3,\n  \"productId\": 15\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -909,7 +909,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 3,\n  \"fk_idProduct\": 17\n}",
+							"raw": "{\n  \"comboId\": 3,\n  \"productId\": 17\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -938,7 +938,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 4,\n  \"fk_idProduct\": 11\n}",
+							"raw": "{\n  \"comboId\": 4,\n  \"productId\": 11\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -967,7 +967,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 4,\n  \"fk_idProduct\": 6\n}",
+							"raw": "{\n  \"comboId\": 4,\n  \"productId\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -996,7 +996,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCombo\": 4,\n  \"fk_idProduct\": 15\n}",
+							"raw": "{\n  \"comboId\": 4,\n  \"productId\": 15\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1019,129 +1019,7 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Order",
-			"item": [
-				{
-					"name": "01",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"fk_idCustomer\": 3,\n    \"status\": \"Created\",\n    \"price\": \"51.75\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API_ADDRESS}}/order/create",
-							"host": [
-								"{{API_ADDRESS}}"
-							],
-							"path": [
-								"order",
-								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "02",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"fk_idCustomer\": 1,\n    \"status\": \"Created\",\n    \"price\": \"30\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API_ADDRESS}}/order/create",
-							"host": [
-								"{{API_ADDRESS}}"
-							],
-							"path": [
-								"order",
-								"create"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Order Product",
-			"item": [
-				{
-					"name": "01",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"fk_idOrder\": 1,\n    \"combos\": [\n        {\n            \"fk_idCombo\": 1\n        }\n    ],\n    \"products\": [\n        {\n            \"fk_idProduct\": 1\n        },\n        {\n            \"fk_idProduct\": 5\n        },\n        {\n            \"fk_idProduct\": 12\n        }\n    ],\n    \"observation\": \"Some Observations\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API_ADDRESS}}/order/product/association/create",
-							"host": [
-								"{{API_ADDRESS}}"
-							],
-							"path": [
-								"order",
-								"product",
-								"association",
-								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "02",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"fk_idOrder\": 2,\n    \"products\": [\n        {\n            \"fk_idProduct\": 15\n        }\n    ],\n    \"observation\": \"Some Observations\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API_ADDRESS}}/order/product/association/create",
-							"host": [
-								"{{API_ADDRESS}}"
-							],
-							"path": [
-								"order",
-								"product",
-								"association",
-								"create"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
+		},		
 		{
 			"name": "Customer",
 			"item": [
@@ -1270,7 +1148,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCampaign\": 1,\n  \"fk_idCustomer\": 1\n}",
+							"raw": "{\n  \"campaignId\": 1,\n  \"customerId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1299,7 +1177,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fk_idCampaign\": 1,\n  \"fk_idCustomer\": 2\n}",
+							"raw": "{\n  \"campaignId\": 1,\n  \"customerId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1314,6 +1192,128 @@
 							"path": [
 								"campaign",
 								"customer",
+								"association",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 3,\n    \"status\": \"Created\",\n    \"price\": \"51.75\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_ADDRESS}}/order/create",
+							"host": [
+								"{{API_ADDRESS}}"
+							],
+							"path": [
+								"order",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 1,\n    \"status\": \"Created\",\n    \"price\": \"30\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_ADDRESS}}/order/create",
+							"host": [
+								"{{API_ADDRESS}}"
+							],
+							"path": [
+								"order",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order Product",
+			"item": [
+				{
+					"name": "01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": 1,\n    \"combos\": [\n        {\n            \"comboId\": 1\n        }\n    ],\n    \"products\": [\n        {\n            \"productId\": 1\n        },\n        {\n            \"productId\": 5\n        },\n        {\n            \"productId\": 12\n        }\n    ],\n    \"observation\": \"Some Observations\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_ADDRESS}}/order/product/association/create",
+							"host": [
+								"{{API_ADDRESS}}"
+							],
+							"path": [
+								"order",
+								"product",
+								"association",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": 2,\n    \"products\": [\n        {\n            \"productId\": 15\n        }\n    ],\n    \"observation\": \"Some Observations\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_ADDRESS}}/order/product/association/create",
+							"host": [
+								"{{API_ADDRESS}}"
+							],
+							"path": [
+								"order",
+								"product",
 								"association",
 								"create"
 							]
@@ -1365,7 +1365,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"paymentMethod\": \"MercadoPago\",\n  \"paymentCode\": \"QRCODE8329742967349\",\n  \"status\": \"Paid\",\n  \"fk_idOrder\": 1\n}",
+							"raw": "{\n  \"paymentMethod\": \"MercadoPago\",\n  \"paymentCode\": \"QRCODE8329742967349\",\n  \"status\": \"Paid\",\n  \"orderId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1392,7 +1392,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"paymentMethod\": \"MercadoPago\",\n  \"paymentCode\": \"QRCODE8329742967349\",\n  \"status\": \"Paid\",\n  \"fk_idOrder\": 2\n}",
+							"raw": "{\n  \"paymentMethod\": \"MercadoPago\",\n  \"paymentCode\": \"QRCODE8329742967349\",\n  \"status\": \"Paid\",\n  \"orderId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"

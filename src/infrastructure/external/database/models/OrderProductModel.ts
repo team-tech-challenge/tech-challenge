@@ -1,5 +1,4 @@
-import { ForeignKey, NonAttribute } from "sequelize";
-import { Table, Column, DataType, Model, HasMany } from "sequelize-typescript";
+import { Table, Column, DataType, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { Order } from "@database/OrderModel";
 import { Product } from "@database/ProductModel";
 import { Combo } from "@database/ComboModel";
@@ -11,30 +10,39 @@ import { Combo } from "@database/ComboModel";
 export class OrderProduct extends Model {
 	@Column({
 		type: DataType.STRING,
-		allowNull: false,
+		allowNull: true,
 	})
 	observation: string;
 
-	@Column({
+	@ForeignKey(() => Order)
+	@Column({		
 		type: DataType.INTEGER,
 	})
-	declare fk_idOrder: ForeignKey<Order["id"]>;
+	declare orderId: number;
 
-	@Column({
+	@ForeignKey(() => Combo)
+	@Column({		
 		type: DataType.INTEGER,
 		allowNull: true,
 	})
-	declare fk_idCombo: ForeignKey<Combo["id"]>;
+	declare comboId: number;
 
-	@Column({
+	@ForeignKey(() => Product)
+	@Column({		
 		type: DataType.INTEGER,
 	})
-	declare fk_idProduct: ForeignKey<Product["id"]>;
+	declare productId: number;
 
-	@HasMany(() => Order, {foreignKey: 'fk_idOrder'})
-  	declare order?: NonAttribute<Order[]>;
+	// Relacionamento de Muitos para Um com Order
+	@BelongsTo(() => Order)
+	order: Order;
 
-	@HasMany(() => Product, {foreignKey: 'fk_idProduct'})
-  	declare product?: NonAttribute<Product[]>;
+	// Relacionamento de Muitos para Um com Product
+	@BelongsTo(() => Product)
+	product: Product;
+
+	// Relacionamento de Muitos para Um com Combo
+	@BelongsTo(() => Combo)
+	combo: Combo;
 
 }

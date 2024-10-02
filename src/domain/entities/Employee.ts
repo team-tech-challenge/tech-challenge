@@ -1,9 +1,10 @@
+import { isValidCpf } from "@utils/valid";
 export class Employee {
-	id?: number;
-	cpf: string;
-	name: string;
-	username: string;
-	password: string;
+	private id?: number;
+	private cpf: string;
+	private name: string;
+	private username: string;
+	private password: string;
 
 	constructor(cpf: string, name: string, username: string, password: string, id?: number) {
 		this.id = id;
@@ -12,4 +13,25 @@ export class Employee {
 		this.username = username;
 		this.password = password;
 	}
+
+	public getId(): number | undefined {
+		return this.id;
+	}
+
+	public getCpf(): string {
+		return this.cpf;
+	}
+	
+	public getName(): string {
+		return this.name;
+	}
+	
+	public getUsername(): string {
+		return this.username;
+	}
+	
+	public getPassword(): string {
+		return this.password;
+	}
+
 }

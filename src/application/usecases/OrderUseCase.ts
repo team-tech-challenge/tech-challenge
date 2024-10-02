@@ -2,191 +2,292 @@ import { IOrderGateway } from "@gateways/IOrderGateway";
 import { ICustomerGateway } from "@gateways/ICustomerGateway";
 import { IComboGateway } from "@gateways/IComboGateway";
 import { ICampaignGateway } from "@gateways/ICampaignGateway";
+import { IProductGateway } from "@gateways/IProductGateway";
 import { Order } from "@entities/Order";
-import { Op } from "sequelize";
+import { OrderProduct } from "@entities/OrderProduct";
+import { Product } from "@entities/Product";
+import { OrderMapper } from "@mappers/OrderMapper";
+import { differenceInSeconds } from 'date-fns';
 
 export class OrderUseCase {
 	constructor(
 		private readonly orderGateway: IOrderGateway,
 		private readonly customerGateway: ICustomerGateway,
 		private readonly comboGateway: IComboGateway,
-		private readonly campaignGateway: ICampaignGateway
+		private readonly campaignGateway: ICampaignGateway,
+		private readonly productGateway: IProductGateway
 	) { }
 
 	async getAll(): Promise<Order[]> {
-		return await this.orderGateway.allOrders();
+		const validStatuses = ["Created", "Processed", "Shipped", "Delivered", "Cancelled", "Waiting Payment"];
+
+		const orders = await this.orderGateway.allOrders();
+
+		// Ordenar os pedidos de acordo com a ordem do array validStatuses
+		return orders.sort((a, b) => {
+		  const indexA = validStatuses.indexOf(a.getStatus());
+		  const indexB = validStatuses.indexOf(b.getStatus());
+	  
+		  return indexA - indexB;
+		});
+		
 	}
 
-	async getOrderById(orderId: string): Promise<any> {
-		return await this.orderGateway.getOrderById({ where: { id: orderId } });
-	}
+	async getOrderTracking(): Promise<Order[]> { 
+		const validStatuses = ["Processed", "Shipped", "Delivered"];
 
-	async createOrder(orderData: any): Promise<Order> {
-		let fk_idCampaign = null;
-		const { fk_idCustomer } = orderData;
-
-		if (fk_idCustomer != null) {
-			const campaign = await this.customerGateway.campaignOfCustomers(fk_idCustomer);
-			const resultCampaign = campaign[0];
-			if (resultCampaign) {
-				fk_idCampaign = resultCampaign["fk_idCampaign"];
+		const orderModels = await this.orderGateway.allOrders({
+			where: {
+			  status: validStatuses
 			}
+		  });
+
+		  return orderModels.map(model => {
+			const order = OrderMapper.toEntity(model);
+			
+			// Calcular a diferença em segundos entre data de criação e atualização
+			const createdAt = new Date(order.getCreatedAt());
+			const updatedAt = new Date(order.getUpdatedAt());
+			const timeDifferenceInSeconds = differenceInSeconds(updatedAt, createdAt);
+		
+			// Converter a diferença em segundos para hh:mm:ss
+			const hours = Math.floor(timeDifferenceInSeconds / 3600).toString().padStart(2, '0');
+			const minutes = Math.floor((timeDifferenceInSeconds % 3600) / 60).toString().padStart(2, '0');
+			const seconds = (timeDifferenceInSeconds % 60).toString().padStart(2, '0');
+		
+			// Atribuir o tempo decorrido ao objeto `order` (pode ser necessário adicionar um método `setTimeElapsed` na entidade `Order`)
+			order.setTimeElapsed(`${hours}:${minutes}:${seconds}`);
+			
+			return order;
+		  });
+	}
+
+	async getOrderById(id: number): Promise<Order | null> {
+		const order = await this.orderGateway.getOrderById(id);
+		return order ? order : null;
+	}
+
+	public async createOrder(data: {
+        customerId: number;
+        campaignId?: number;}): Promise<Order> {		
+		const customer = await this.customerGateway.getCustomerById(data.customerId);
+		if (!customer) {
+			throw new Error("Customer not found");
 		}
 
-		return await this.orderGateway.newOrder({ ...orderData, fk_idCampaign });
-	}
-
-	async updateOrder(orderData: any): Promise<number> {
-		const { id, fk_idCustomer, status, price } = orderData;
-		if (!id) throw new Error("Missing required field: id");
-
-		const [updatedCount] = await this.orderGateway.updateOrder(
-			{ fk_idCustomer, status, price },
-			{ where: { id } }
+		let campaign;
+		
+		if (data.campaignId) {
+            campaign = await this.campaignGateway.getCampaignById(data.campaignId);
+            if (!campaign) {
+                throw new Error("Campaign not found");
+            }
+        }
+		const order = new Order(
+			data.customerId,         // customerId
+			'Created',             // status
+			0,              // price
+			data.campaignId        // campaignId (opcional)
 		);
 
-		return updatedCount;
+		return await this.orderGateway.newOrder(order);
 	}
 
-	async deleteOrder(orderId: string): Promise<number> {
-		return await this.orderGateway.deleteOrder({ where: { id: orderId } });
+	async updateOrder(id: number, data: Order): Promise<void> {
+		const existingOrder = await this.getOrderById(id);
+        if (!existingOrder) {
+            throw new Error("Order not found");
+        }
+        await this.orderGateway.updateOrder(id, data);        
 	}
 
-	async createOrderProductAssociation(orderProductData: any): Promise<void> {
-		const { fk_idOrder, combos, products, observation } = orderProductData;
+	async deleteOrder(orderId: number): Promise<number> {
+		return await this.orderGateway.deleteOrder(orderId);
+	}
 
-		if (!fk_idOrder) throw new Error("Missing required field: fk_idOrder");
-		if (!combos && !products) throw new Error("No products registered in the order");
+	async createOrderProductAssociation(orderId: number, data: { combos: { comboId: number }[]; products: { productId: number }[]; observation?: string }): Promise<void> {
+		// Verificar se o pedido existe		
+		const order = await this.orderGateway.getOrderById(orderId);
+			
+		if (!order)	throw new Error('Order not found');
 
-		const order = await this.orderGateway.getOrderById({ where: { id: fk_idOrder } });
-		if (!order || order.length == 0) throw new Error("Order not found");
-		if (order[0].dataValues.status != 'Created') throw new Error("Order cannot be changed");
+		if (order.getStatus() != 'Created') throw new Error("Order cannot be changed");
 
-		if (combos) {
-			for (const combo of combos) {
-				const fk_idCombo = combo.fk_idCombo;
-				const resultProducts = await this.comboGateway.productsOfCombo(fk_idCombo);
-				for (const result of resultProducts) {
-					const fk_idProduct = result.dataValues.fk_idProduct;
-					if (fk_idProduct != null) {
-						await this.orderGateway.newProductAssociation({
-							fk_idOrder,
-							fk_idCombo,
-							fk_idProduct,
-							observation,
-						});
-					}
+		const orderProducts: OrderProduct[] = [];
+
+		// Processar Combos
+		if (data.combos) {
+			for (const comboEntry of data.combos) {
+				const combo = await this.comboGateway.getComboById(comboEntry.comboId);
+				const comboProducts = await this.comboGateway.productsOfCombo(comboEntry.comboId);
+				if (!comboProducts || comboProducts.length === 0) {
+					throw new Error(`No products found for combo ID ${comboEntry.comboId}`);
+				}
+		
+				for (const comboProduct of comboProducts) {					
+					const orderProduct = new OrderProduct(orderId, comboProduct.getProduct().getId(), data.observation, combo.getId());
+					orderProducts.push(orderProduct);
+					// Adicionando o preço com desconto do combo
+					// Adicionando o preço com desconto do combo considerando a quantidade
+					const discountedPrice = orderProduct.calculateTotalPrice(comboProduct.getProduct().getPrice(), combo.getDiscount());					
+					order.addToTotalPrice(discountedPrice);
 				}
 			}
 		}
 
-		if (products) {
-			for (const product of products) {
-				const fk_idProduct = product.fk_idProduct;
-				if (fk_idProduct != null) {
-					await this.orderGateway.newProductAssociation({
-						fk_idOrder,
-						fk_idProduct,
-						observation,
-					});
+		// Processar Produtos Individuais
+		if (data.products) {
+			for (const productEntry of data.products) {
+				const product = await this.productGateway.getProductById(productEntry.productId);
+				if (!product) {
+					throw new Error(`No products found ID ${productEntry.productId}`);
 				}
+				const orderProduct = new OrderProduct(orderId, productEntry.productId, data.observation);
+				orderProducts.push(orderProduct);
+				// Adicionando o preço do produto
+				const totalPrice = orderProduct.calculateTotalPrice(product.getPrice());				
+        		order.addToTotalPrice(totalPrice);				
 			}
 		}
 
-		await this.updateOrderPrice(fk_idOrder);
+		// Adicionar produtos ao pedido
+		await this.orderGateway.newProductAssociation(orderProducts);
+
+		// Verificar se há um desconto de campanha
+		if (order.getCampaign()) {
+		  const campaign = await this.campaignGateway.getCampaignById(order.getCampaign());
+		  if (campaign) {
+			const discount = campaign.getDiscount();
+			order.applyCampaignDiscount(discount);
+		  }
+		}		
+		// Atualizar o valor do pedido no banco de dados
+		await this.orderGateway.updateOrderTotalPrice(orderId, order.getPrice());
+		
 	}
 
-	async deleteOrderProductAssociation(orderProductData: any): Promise<void> {
-		const { fk_idOrder, combos, products } = orderProductData;
+	async deleteOrderProductAssociation(orderId: number, data: { combos?: { comboId: number }[]; products?: { productId: number }[] }): Promise<void> {
+		
+		if (!orderId) throw new Error("Missing required field: orderId");
+		if (!data.combos && !data.products) throw new Error("No products registered in the order");
 
-		if (!fk_idOrder) throw new Error("Missing required field: fk_idOrder");
-		if (!combos && !products) throw new Error("No products registered in the order");
+		const order = await this.orderGateway.getOrderById(orderId);
+		if (!order) throw new Error("Order not found");
+		if (order.getStatus() != 'Created') throw new Error("Order cannot be changed");
 
-		const order = await this.orderGateway.getOrderById({ where: { id: fk_idOrder } });
-		if (!order || order.length == 0) throw new Error("Order not found");
-		if (order[0].dataValues.status != 'Created') throw new Error("Order cannot be changed");
 
-		if (combos) {
-			for (const combo of combos) {
-				const fk_idCombo = combo.fk_idCombo;
-				const resultProducts = await this.comboGateway.productsOfCombo(fk_idCombo);
-				for (const result of resultProducts) {
-					const fk_idProduct = result.dataValues.fk_idProduct;
-					if (fk_idProduct != null) {
-						await this.orderGateway.deleteProductOfOrder({
-							where: { fk_idOrder, fk_idCombo, fk_idProduct },
-						});
-					}
-				}
+		// Remover produtos de combos
+		if (data.combos) {
+			for (const comboEntry of data.combos) {
+			  const comboProducts = await this.comboGateway.productsOfCombo(comboEntry.comboId);
+			  if (!comboProducts || comboProducts.length === 0) {
+				throw new Error(`No products found for combo ID ${comboEntry.comboId}`);
+			  }
+	  
+			  for (const comboProduct of comboProducts) {
+				await this.orderGateway.deleteProductOfOrder(orderId, comboProduct.getProduct().getId(), comboEntry.comboId);
+			  }
 			}
 		}
 
-		if (products) {
-			for (const product of products) {
-				const fk_idProduct = product.fk_idProduct;
-				if (fk_idProduct != null) {
-					await this.orderGateway.deleteProductOfOrder({
-						where: {
-							fk_idOrder,
-							fk_idProduct,
-							fk_idCombo: { [Op.is]: null },
-						},
-					});
-				}
+		if (data.products) {
+			for (const productEntry of data.products) {
+			  await this.orderGateway.deleteProductOfOrder(orderId, productEntry.productId, null);
 			}
 		}
-
-		await this.updateOrderPrice(fk_idOrder);
 	}
 
-	async getOrderProducts(orderID: string): Promise<any> {
-		return await this.orderGateway.productsOfOrder(orderID);
-	}
+	async getOrderProducts(orderId: number): Promise<{ product: Product; comboId: number | null }[]> {
+		const products = await this.orderGateway.productsOfOrder(orderId);
 
-	async updateOrderPrice(id: string): Promise<void> {
-		let orderPrice = 0;
-
-		const order = await this.orderGateway.getOrderById({ where: { id } });
-		if (!order || order.length == 0) return;
-		if (order[0].dataValues.status != 'Created') return;
-
-		const products = await this.orderGateway.productsOfOrder(id);
-		for (const product of products) {
-			const productsOrder = product.dataValues.product;
-			let discount = 0;
-			if (product.dataValues.fk_idCombo) {
-				const resultCombo = await this.comboGateway.getComboById({ where: { id: product.dataValues.fk_idCombo } });
-				if (resultCombo[0].discount) {
-					discount = resultCombo[0].discount;
-				}
-			}
-			for (const productDetail of productsOrder) {
-				orderPrice += productDetail.dataValues.price - (productDetail.dataValues.price * discount);
-			}
+		if (!products) {
+			throw new Error('Order not found');
 		}
-
-		if (order[0].dataValues.fk_idCampaign) {
-			const campaign = await this.campaignGateway.getCampaignById(order[0].dataValues.fk_idCampaign);
-			orderPrice -= orderPrice * campaign[0].discount;
-
-			const orderUpdated = new Order(order[0]);
-			orderUpdated.price = orderPrice.toString();
-
-			await this.orderGateway.updateOrder(orderUpdated, { where: { id } });
-		}
+	  
+		return products;
 	}
 
-	async updateOrderStatus(orderData: any): Promise<number> {
-		const { id, fk_idCustomer, status, price } = orderData;
-		if (!id) throw new Error("Missing required field: id");
+	// async updateOrderPrice(id: number): Promise<void> {
+	// 	let orderPrice = 0;
 
-		const [updatedCount] = await this.orderGateway.updateOrderStatus(
-			{ fk_idCustomer, status: "Received", price },
-			{ where: { id } }
-		);
+	// 	const order = await this.getOrderById(id);		
+	// 	if (!order) return;
+	// 	if (order.getStatus() != 'Created') return;
 
-		return updatedCount;
-	}
+	// 	const products = await this.orderGateway.productsOfOrder(id);
+	// 	for (const product of products) {
+	// 		const productsOrder = product.dataValues.product;
+	// 		let discount = 0;
+	// 		if (product.dataValues.comboId) {
+	// 			const resultCombo = await this.comboGateway.getComboById({ where: { id: product.dataValues.comboId } });
+	// 			if (resultCombo) {
+	// 				console.log(resultCombo)
+	// 				//discount = resultCombo.discount;
+	// 			}
+	// 		}
+	// 		for (const productDetail of productsOrder) {
+	// 			order.orderPrice += productDetail.dataValues.price - (productDetail.dataValues.price * discount);
+	// 		}
+	// 	}
+
+	// 	if (order.campaignId) {
+	// 		const campaign = await this.campaignGateway.getCampaignById(order.campaignId);
+	// 		order.orderPrice -= order.orderPrice * campaign[0].getDiscount();
+
+			
+	// 		if (order.customerId !== undefined) {
+	// 			order.setCustomer(order.customerId);
+	// 		}
+	// 		if (order.customerId !== undefined) {
+	// 			order.setStatus(order.status);
+	// 		}
+	// 		if (order.customerId !== undefined) {
+	// 			order.setPrice(order.orderPrice);
+	// 		}
+	// 		if (order.customerId !== undefined) {
+	// 			order.setCampaign(order.campaignId);
+	// 		}			      
+
+	// 		await this.orderGateway.updateOrder(id, order);
+	// 	}
+	// }
+
+	// async updateOrderStatus(orderData: {
+    //     id: number;
+    //     status: string;
+    //     price: number;
+    //     customerId?: number; // opcional, dependendo do seu caso de uso
+    // }): Promise<number> {
+    //     const { id, status, price, customerId } = orderData;
+
+    //     if (!id) {
+    //         throw new Error("Missing required field: id");
+    //     }
+
+    //     // Obtém a ordem existente
+    //     const existingOrder = await this.getOrderById(id);
+    //     if (!existingOrder || existingOrder.length === 0) {
+    //         throw new Error("Order not found");
+    //     }
+
+    //     // Cria a instância da entidade Order
+        
+	// 	if (customerId !== undefined) {
+	// 		existingOrder.setCustomerId(customerId);
+	// 	}
+	// 	if (status !== undefined) {
+	// 		existingOrder.setStatus(status);
+	// 	}
+	// 	if (price !== undefined) {
+	// 		existingOrder.setPrice(price);
+	// 	}			
+
+    //     // Atualiza o status da ordem
+    //     const updatedCount = await this.orderGateway.updateOrder(id, existingOrder);
+
+    //     return updatedCount;
+	
+	// }
 
 	async getOrderByStatus(orderStatus: string): Promise<any[]> {
 		const result = await this.orderGateway.allOrders({
@@ -197,8 +298,8 @@ export class OrderUseCase {
 		return result.map((order) => {
 			const timeValue = new Date().getMinutes() - new Date(order["updatedAt"]).getMinutes();
 			return {
-				id: order.id,
-				status: order.status,
+				id: order.getId(),
+				status: order.getStatus(),
 				timeQueue: `${timeValue} Minutes`,
 			};
 		});

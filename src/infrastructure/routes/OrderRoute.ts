@@ -5,6 +5,7 @@ import { OrderController } from "@controllers/OrderController";
 import { CustomerAdapter } from "@adapters/CustomerAdapter";
 import { ComboAdapter } from "@adapters/ComboAdapter";
 import { CampaignAdapter } from "@adapters/CampaignAdapter";
+import { ProductAdapter } from "@adapters/ProductAdapter";
 
 export const orderRoute = Router();
 
@@ -12,11 +13,13 @@ const orderAdapter = new OrderAdapter();
 const customerAdapter = new CustomerAdapter();
 const comboAdapter = new ComboAdapter();
 const campaignAdapter = new CampaignAdapter();
+const productAdapter = new ProductAdapter();
 const orderUseCase = new OrderUseCase(
 	orderAdapter,
 	customerAdapter,
 	comboAdapter,
-    campaignAdapter
+    campaignAdapter,
+    productAdapter,
 );
 const orderController = new OrderController(orderUseCase);
 
@@ -29,6 +32,16 @@ orderRoute.get("/all", (req, res) => {
 	orderController.getAll(req, res);
 });
 
+orderRoute.get("/tracking", (req, res) => {
+	// #swagger.tags = ['Order']
+	/* #swagger.responses[200] = {
+            description: 'Return all orders',
+            schema: { $ref: '#/definitions/Tracking' }
+    } */
+	orderController.getOrderTracking(req, res);
+});
+
+
 orderRoute.get("/:Id", (req, res) => {
 	// #swagger.tags = ['Order']
 	orderController.getOrderById(req, res);
@@ -40,7 +53,7 @@ orderRoute.post("/create", (req, res) => {
             required: true,
             content: {
                 "application/json": {
-                    schema: { $ref: '#/definitions/Order' }
+                    schema: { $ref: '#/definitions/AddOrder' }
                 }
             }
         }
@@ -59,7 +72,7 @@ orderRoute.put("/update/:id", (req, res) => {
             required: true,
             content: {
                 "application/json": {
-                    schema: { $ref: '#/definitions/Order' }
+                    schema: { $ref: '#/definitions/UpdateOrder' }
                 }
             }
         }

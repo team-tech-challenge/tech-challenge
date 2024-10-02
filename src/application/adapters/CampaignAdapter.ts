@@ -1,54 +1,78 @@
-import { Campaign } from "@database/CampaignModel";
-import { Customer } from "@database/CustomerModel";
-import { CampaignCustomer } from "@database/CampaignCustomerModel";
+import { Campaign as CampaignModel } from "@database/CampaignModel";
+import { Customer as CustomerModel } from "@database/CustomerModel";
+import { CampaignCustomer as CampaignCustomerModel } from "@database/CampaignCustomerModel";
 import { ICampaignGateway } from "@gateways/ICampaignGateway";
+import { Campaign } from "@entities/Campaign";
+import { CampaignCustomer } from "@entities/CampaignCustomer";
+import { CampaignMapper } from "@mappers/CampaignMapper";
 import { Op } from "sequelize";
+import { Customer } from "@entities/Customer";
+import { CustomerMapper } from "@mappers/CustomerMapper";
+import { CampaignCustomerMapper } from "@mappers/CampaignCustomerMapper";
 
 export class CampaignAdapter implements ICampaignGateway {
-	allCampaigns(): Promise<Campaign[]> {
-		return Campaign.findAll();
+	async allCampaigns(): Promise<Campaign[]> {		
+		const campaignModels = await CampaignModel.findAll();
+        return campaignModels.map(model => CampaignMapper.toEntity(model));
 	}
 
-	getCampaignById(params?: any): Promise<Campaign[]> {
-		return Campaign.findAll(params);
+	async getCampaignById(id: number): Promise<Campaign> {
+        const campaignModel = await CampaignModel.findOne({ where: { id } });
+        return CampaignMapper.toEntity(campaignModel);		
+    }
+
+	async newCampaign(campaign: any): Promise<Campaign> {
+        const campaignModel = await CampaignModel.create(campaign);
+        return CampaignMapper.toEntity(campaignModel);
+    }	
+
+	async newCampaignAssociation(values: any): Promise<void> {
+		
+		try {
+			await CampaignCustomerModel.create(values);
+		} catch (error) {
+			console.error(error);
+			throw new Error("Custumer not association");
+		}
+		
+		
 	}
 
-	newCampaign(values: any): Promise<Campaign> {
-		return Campaign.create(values);
+	async updateCampaign(id: number, data: Campaign): Promise<void> {
+		
+        const existingCampaign = await CampaignModel.findOne({ where: { id } });
+
+        if (!existingCampaign) {
+            throw new Error("Campaign not found");
+        }       
+		
+		try {
+			await CampaignModel.update(data, {
+				where: { id }
+			});
+		} catch (error) {
+			console.error(error);
+			throw new Error("Campaign not updated");
+		}
+		
 	}
 
-	newCampaignAssociation(values: any): Promise<CampaignCustomer> {
-		return CampaignCustomer.create(values);
-	}
-
-	updateCampaign(id: number, values: any): Promise<[affectedCount: number]> {
-		return Campaign.update(values, { where: { id } });
-	}
-
-	customersOfCampaign(id: string): Promise<CampaignCustomer[]> {
-		return CampaignCustomer.findAll({
-			where: { fk_idCampaign: id },
-			include:[
+	async customersOfCampaign(campaignId: number, customerId?: number): Promise<CampaignCustomer[]> {
+		const whereCondition: any = { campaignId };
+		if (customerId) {
+			whereCondition.customerId = customerId;
+		}
+		const customerCampaign = await CampaignCustomerModel.findAll({
+			where: whereCondition,
+			include: [
 				{
-					model:Campaign,
-					on: {
-						"$campaign.id$": {
-							[Op.col]: "CampaignCustomer.fk_idCampaign",
-						},
-					},
-				},
-				{
-					model:Customer,
-					on: {
-						"$customer.id$": {
-							[Op.col]: "CampaignCustomer.fk_idCustomer",
-						},
-					},
-
-				}
-			],
+					model: CustomerModel,
+					as: 'customer'
+				}],
 			order: [['id', 'DESC']],
-			limit : 1,
 		});
+
+		return customerCampaign.map((customerCampaignRecord) => CampaignCustomerMapper.toEntity(customerCampaignRecord));	
+	
 	}
 }

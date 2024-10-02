@@ -1,5 +1,4 @@
-import { ForeignKey, NonAttribute } from "sequelize";
-import { Table, Column, DataType, Model, HasMany } from "sequelize-typescript";
+import { Table, Column, DataType, Model, BelongsTo, ForeignKey} from "sequelize-typescript";
 import { Campaign } from "@database/CampaignModel";
 import { Customer } from "@database/CustomerModel";
 
@@ -9,24 +8,25 @@ import { Customer } from "@database/CustomerModel";
 	modelName: "CampaignCustomer",
 })
 export class CampaignCustomer extends Model {
-	@Column({
+	
+	@ForeignKey(() => Campaign)
+	@Column({		
 		type: DataType.INTEGER,
 	})
-	declare fk_idCampaign: ForeignKey<Campaign["id"]>;
+	declare campaignId: number;
 
-	@Column({
+	@ForeignKey(() => Customer)
+	@Column({		
 		type: DataType.INTEGER,
 	})
-	declare fk_idCustomer: ForeignKey<Customer["id"]>;
+	declare customerId: number;
 
-	@HasMany(() => Campaign, {
-		foreignKey: 'fk_idCampaign',
-	})
-	declare campaign?: NonAttribute<Campaign[]>;
-
-	@HasMany(() => Customer, {
-		foreignKey: 'fk_idCustomer',
-	})
-	declare customer?: NonAttribute<Customer[]>;
+	// Relacionamento de Muitos para Um com Campaign
+	@BelongsTo(() => Campaign)
+	campaign: Campaign;
+	
+	// Relacionamento de Muitos para Um com Customer
+	@BelongsTo(() => Customer)
+	customer: Customer;
 
 }

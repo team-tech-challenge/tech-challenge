@@ -1,22 +1,26 @@
 import { Order } from "@entities/Order";
+import { OrderProduct } from "@entities/OrderProduct";
+import { Product } from "@entities/Product";
 
 export interface IOrderGateway {
 	allOrders(params?): Promise<Order[]>;
 
-	getOrderById(condition?: any): Promise<Order[]>;
+	getOrderById(id: number): Promise<Order>;
 
-	newOrder(Order: Order): Promise<Order>;
+	newOrder(order: Order): Promise<Order>;
 
-	updateOrder(Order: Order, params: any): Promise<[affectedCount: number]>;
+	updateOrder(id: number, order: Order): Promise<void>;
 
-	deleteOrder(params: any): Promise<number>;
-
-	newProductAssociation(values: any): Promise<any>;
-
-	productsOfOrder(id: string): Promise<any[]>;
+	deleteOrder(id: number): Promise<number>;
+	
+	productsOfOrder(id: number): Promise<{ product: Product; comboId: number | null }[]>;
 
 	updateOrderStatus(Order: Order, params: any);
+	
+	updateOrderTotalPrice(orderId: number, totalPrice: number);
 
-	deleteProductOfOrder(params: any): Promise<number>;
+	newProductAssociation(products: OrderProduct[]): Promise<any>;
+
+	deleteProductOfOrder(orderId: number, productId: number | null, comboId: number | null): Promise<void>;
 
 }
